@@ -1,5 +1,6 @@
 # Qt-Vlc-FFmpeg
-Simple VLC Player with FFmpeg in Qt
+Simple VLC Player with FFmpeg in Qt.
+It can be used as a control interface for remote controlled vehicles such as drone or self driving car etc...
 
 This is under the development
 
