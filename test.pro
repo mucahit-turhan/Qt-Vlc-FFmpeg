@@ -1,4 +1,4 @@
-QT       += core gui quick qml network positioning location
+QT       += core gui quick qml network positioning location gamepad
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,22 +21,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 #FFmpeg icin lazim olabilir
-#QMAKE_CXXFLAGS += -D__STDC_CONSTANT_MACROS
+QMAKE_CXXFLAGS += -D__STDC_CONSTANT_MACROS
 
 LIBS += -L$$PWD/3rdparty/VLC/bin
 LIBS += -laxvlc -llibvlc -llibvlccore -lnpvlc
-LIBS += -L$$PWD/3rdparty/FFMPEG/lib -lavdevice -lavfilter -lavformat -lavutil -lpostproc -lswresample -lswscale
+LIBS += -L$$PWD/3rdparty/FFMPEG/lib
+LIBS += -lavcodec -lavdevice -lavfilter -lavformat -lavutil -lpostproc -lswresample -lswscale
+
 INCLUDEPATH += $$PWD/3rdparty/VLC/include
 INCLUDEPATH += $$PWD/3rdparty/FFMPEG/include
 
 SOURCES += \
     ffmpeg.cpp \
+    gamepadMonitor.cpp \
     main.cpp \
-    qtplayer.cpp
+    qtplayer.cpp \
+    vlc.cpp
 
 HEADERS += \
     ffmpeg.h \
-    qtplayer.h
+    gamepadMonitor.h \
+    qtplayer.h \
+    vlc.h
 
 FORMS += \
     qtplayer.ui

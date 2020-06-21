@@ -15,6 +15,7 @@
 #endif
 #include <QQmlContext>
 #include <iostream>
+#include <QDebug>
 
 //MAP VIEWER
 static bool parseArgs(QStringList& args, QVariantMap& parameters)
@@ -111,19 +112,15 @@ void mapviewer(int argc, char *argv[]){
     application.exec();
 }
 
-
-
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_X11
 XInitThreads();
 #endif
-
-    QApplication a(argc, argv);
     //mapviewer(argc,argv);
+    QApplication a(argc, argv);
     QtPlayer w;
     w.show();
     return a.exec();
-
 }
 

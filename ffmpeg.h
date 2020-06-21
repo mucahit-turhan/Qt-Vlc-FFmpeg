@@ -1,6 +1,9 @@
 #ifndef FFMPEG_H
 #define FFMPEG_H
 
+#include <QString>
+#include <QProcess>
+
 extern "C" {
 /*Include ffmpeg header file*/
 #include <3rdparty/FFMPEG/include/libavformat/avformat.h>
@@ -14,20 +17,18 @@ extern "C" {
 
 class FFmpeg{
 public:
-    FFmpeg(bool is_command_line);
+    FFmpeg();
     ~FFmpeg();
 
     bool isCommandLine;
-
     int saveVideoFromStream();
     void encode(AVCodecContext* enc_ctx, AVFrame* frame, AVPacket* pkt,FILE* outfile);
     void saveFrame(unsigned char* buf, int wrap, int xsize, int ysize, char* filename);
     int decode_packet(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame);
+    void runCommandLine(const QString command);
 
-    void commandLine(const char* command);
 private:
     void logging(const char* fmt, ...);
-
     AVFormatContext* ifmt_ctx;
     AVFormatContext* ofmt_ctx;
     char* in_filename;
@@ -37,4 +38,4 @@ private:
 };
 
 
-#endif // FFMPEG_H
+#endif //FFMPEG_H

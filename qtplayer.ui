@@ -601,7 +601,7 @@
         <widget class="QLineEdit" name="udpLineEdit">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="text">
@@ -770,7 +770,7 @@
        <item>
         <widget class="QLineEdit" name="rtpLineEdit">
          <property name="text">
-          <string>127.000.000.003:6661</string>
+          <string>224.000.000.003:6661</string>
          </property>
         </widget>
        </item>
@@ -821,6 +821,56 @@
         </widget>
        </item>
       </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>741</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="ffmpegLabel">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>FFmpeg:  </string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="ffmpegLineEdit">
+       <property name="text">
+        <string>ffmpeg -i C:\Users\Mucahit\Desktop\Projects\DroneGUI\akinci.mp4 output.mkv</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Record</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

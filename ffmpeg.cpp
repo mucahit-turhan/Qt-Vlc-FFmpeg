@@ -1,16 +1,14 @@
-#include <ffmpeg.h>
-#include <iostream>
-#include <QDateTime>
+#include "ffmpeg.h"
 #include <QProcess>
+#include <QDebug>
 
 extern "C" {
-/*Include ffmpeg header file*/
 #include <3rdparty/FFMPEG/include/libavcodec/avcodec.h>
 #include <3rdparty/FFMPEG/include/libavutil/imgutils.h>
 #include <3rdparty/FFMPEG/include/libavutil/opt.h>
 }
 
-////For FFmpeg
+//For FFmpeg gerekli mi dene
 //#ifndef INT64_C
 //#define INT64_C(c) (c ## LL)
 //#define UINT64_C(c) (c ## ULL)
@@ -19,50 +17,40 @@ extern "C" {
 //#define AV_CODEC_FLAG_GLOBAL_HEADER (1 << 22)
 //#define CODEC_FLAG_GLOBAL_HEADER AV_CODEC_FLAG_GLOBAL_HEADER
 //#define AVFMT_RAWPICTURE 0x0020
-////For FFmpeg
+//For FFmpeg gerekli mi dene
 
 //This code should be updated for latest FFmpeg version
 
-FFmpeg::FFmpeg(bool is_command_line){
-    if(!is_command_line){
-        ifmt_ctx = NULL;
-        ofmt_ctx = NULL;
-        avdic = NULL;
-        ofmt = NULL;
-    }
-    isCommandLine = true;
-
+FFmpeg::FFmpeg(){
+    qInfo("FFMPEG CONSTRUCTOR");
+    ifmt_ctx = NULL;
+    ofmt_ctx = NULL;
+    avdic = NULL;
+    ofmt = NULL;
 }
 
 FFmpeg::~FFmpeg(){
-    if(!isCommandLine){
-        av_dict_free(&avdic);
-        avformat_close_input(&ifmt_ctx);
-        //Close input
-        if (ofmt_ctx && !(ofmt->flags & AVFMT_NOFILE))
-            avio_close(ofmt_ctx->pb);
-        avformat_free_context(ofmt_ctx);
-    }
+    qInfo("FFMPEG DESTRUCTOR");
+    av_dict_free(&avdic);
+    avformat_close_input(&ifmt_ctx);
+
+    if (ofmt_ctx && !(ofmt->flags & AVFMT_NOFILE))
+        avio_close(ofmt_ctx->pb);
+
+    avformat_free_context(ofmt_ctx);
 }
 
-//Parameter should be used, change it
-void FFmpeg::commandLine(const char* command){
-    QProcess _FFMPEG;
-    QString _process = "ffmpeg";
-    QStringList _paramList;
-        _paramList << "-i"
-        << "inputMovie.avi"
-        << "-acodec"
-        << "pcm_s16le"
-        << "outputAudioFile.wav";
-    _FFMPEG.start(_process,_paramList);
-
-    /*
-    if ( !(_FFMPEG.waitForFinished()) )
-     qDebug() << "Conversion failed:" << _FFMPEG.errorString();
-     else
-     qDebug() << "Conversion output:" << _FFMPEG.readAll();
-    */
+void FFmpeg::runCommandLine(const QString command){
+    //Thread must be used. If not, gui wait the end of the process
+    QProcess FFMPEG;
+    QString process = "ffmpeg";
+    QStringList paramList = command.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    paramList.removeFirst();
+    FFMPEG.start(process,paramList);
+    if ( !(FFMPEG.waitForFinished()) )
+        qDebug() << "Conversion failed:" << FFMPEG.errorString();
+    else
+        qDebug() << "Conversion output:" << FFMPEG.readAll();
 }
 /*
 int FFmpeg::saveVideoFromStream(){
@@ -242,7 +230,7 @@ int FFmpeg::saveVideoFromStream(){
 }
 */
 
-/*
+
 //This method is appropriate for last version of FFmpeg
 void FFmpeg::encode(AVCodecContext* enc_ctx, AVFrame* frame, AVPacket* pkt,FILE* outfile)
 {
@@ -272,7 +260,7 @@ void FFmpeg::encode(AVCodecContext* enc_ctx, AVFrame* frame, AVPacket* pkt,FILE*
         av_packet_unref(pkt);
     }
 }
-*/
+
 
 //This method is appropriate last version of FFmpeg
 void FFmpeg::saveFrame(unsigned char* buf, int wrap, int xsize, int ysize, char* filename)
@@ -300,7 +288,7 @@ void FFmpeg::logging(const char* fmt, ...)
     fprintf(stderr, "\n");
 }
 
-/*
+
 int FFmpeg::decode_packet(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame)
 {
     // Supply raw packet data as input to a decoder
@@ -346,4 +334,4 @@ int FFmpeg::decode_packet(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFr
     }
     return 0;
 }
-*/
+
